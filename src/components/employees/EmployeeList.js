@@ -11,11 +11,17 @@ export const EmployeeList = () => {
 
 
    
+    
 
 
 
-
-
+    const getAllEmployees = () => {
+        fetch(`http://localhost:8088/employees?_expand=user&_expand=location`)
+                .then(response => response.json())
+                .then((employeeArray) => {
+                    setEmployees(employeeArray)
+                })
+    }
 
  
 
@@ -29,7 +35,6 @@ useEffect(
     },
     [] // When this array is empty, you are observing initial component state
 )
-
 
 
 
@@ -54,6 +59,23 @@ return <> {
                         <div>Location: {employee.location.name}</div>
                         <div>Start Date: {employee.startDate}</div>
                         <div>Pay Rate: {employee.payRate}</div>
+                        <button onClick={() => {
+                        fetch(`http://localhost:8088/employees/${employee.id}`, {
+                            method: "DELETE"
+                        })
+                    
+                        .then(() => {
+                            fetch(`http://localhost:8088/users/${employee.user.id}`, {
+                            method: "DELETE"
+                        })
+                    })
+                        .then(() => {
+                            // navigate("/employees")
+                            getAllEmployees()
+                        })
+                    }}
+                    
+                         className="tickeFinish">Fire Employee</button>
                     </footer>    
                 </section>
             }
