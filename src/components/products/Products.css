@@ -1,0 +1,14 @@
+
+
+
+.products {
+    display: flex;
+    flex-direction: column;
+}
+
+.product {
+    background-color: lightgreen;
+    border: 1px dotted darkorchid;
+    padding: .7rem;
+    margin: .5rem;
+}
