@@ -5,10 +5,11 @@ import { Customer } from "./Customer"
 
 export const CustomerList = () => {
     const [customers, setCustomers] = useState([])
+    const [sortedCustomers, setSorted] = useState([])
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/users?isStaff=false`)
+            fetch(`http://localhost:8088/users?isStaff=false&_embed=purchases`)
             .then(response => response.json())
             .then((customerArray) => {
                 setCustomers(customerArray)
@@ -17,12 +18,27 @@ export const CustomerList = () => {
         []
     )
 
+    useEffect(
+        () => {
+            const sortByPurchases = customers.sort((a, b) => b.purchases.length - a.purchases.length)
+            setSorted(sortByPurchases)
+        },
+        [customers]
+    )
+
+
+
+
+
     return <article className="customers">
         {
-            customers.map(customer => < Customer key={`customer--${customer.id}`}
+            sortedCustomers.map(customer => < Customer key={`customer--${customer.id}`}
                 id={customer.id}
                 fullName={customer.fullName}
-                email={customer.email} />)
+                email={customer.email}
+                numofCandies={customer.purchases.length} />)
         }
     </article>
 }
+
+//SORT METHOD FOR NUMOFCANDIES ???
